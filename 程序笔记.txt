@@ -1,0 +1,22 @@
+要点：
+1. Qt 中的正则表达式 nameList = name.split(QRegularExpression("\\s+"), QString::SkipEmptyParts);
+
+2. 强化封装的概念：在FindDialog类中，只提供了一个公开接口，用于返回用户输入的信息，相比于提供一个公有的槽函数，封装性的概念更强。
+
+3. QDataStream 和 QTextStream, QDataStream 用于表示二进制流，QTextStream用于表示文本流，使用QDataStream之前，需要指定Qt版本，输入输出要一致。
+
+4. QMessageBox中的第三个参数可格式化输出，QMessageBox::information(this, tr("Edit Successful"),tr("\"%1\" has been edited in your address book.").arg(name));
+
+5. 在Window下，比如tr("&Save")的快捷键为Alt+S
+
+6. QMap的使用，可以直接插入，contacts.insert(name, address);
+
+7. nameLine->setFocus(Qt::OtherFocusReason); 设置焦点
+
+8. exec的使用dialog->show();
+    if(dialog->exec() == QDialog::Accepted) {//do something}
+	
+9. if(!file.open(QIODevice::ReadOnly)) {//do something}
+
+10.  通过设置QWidget::setAttribute(Qt::WA_DeleteOnClose),在关闭对话框(手动close获取esc closeEvent)的时候会自动调用析构函数
+在主窗口的槽函数中使用new分配一个新的对话框，如果使用this，每次点击，都会new出一个，然而，只要不关闭主窗口，就永远不会调用delete，点击的次数越多，new的越多，内存会一直增加。如果需要在槽函数中调用，使用setAttribute(Qt::WA_DeleteOnClose)，这样，每次关闭，都会调用析构函数。但这样一来，在窗口关闭后，该对象就消失了。或者在构造函数中直接new出来，这样，内存也不会增加
